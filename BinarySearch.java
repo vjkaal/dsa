@@ -1,5 +1,9 @@
 class BinarySearch{
   public void search(int[] array, int elem){
+    if(array.length == 0){
+      System.out.println("Array empty");
+      return;
+    }
     if(!chkSorted(array)){
       System.out.println("Array not sorted");
       return;
