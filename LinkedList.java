@@ -50,10 +50,10 @@ class LinkedList{
         Node temp = new Node(data);
         temp.setNext(current.getNext());
         current.setNext(temp);
+        size++;
       }
       current = current.getNext();
     }
-    size++;
   }
 
   public void removeS_Elem(int data){
