@@ -87,4 +87,60 @@ class DoublyLinkedList{
     }
     System.out.println("null");
   }
+
+
+  public void remove(){
+    if(head == null) return;
+    prev = prev.getPrev();
+    prev.setNext(null);
+    size--;
+  }
+
+  public void removeHead(){
+    if(head == null) return;
+    head = head.getNext();
+    head.setPrev(null);
+    size--;
+  }
+
+  public void removeS_Elem(int data){
+    if(head == null) return;
+    else if(head.getData() == data){
+      head = head.getNext();
+      head.setPrev(null);
+      size--;
+      return;
+    }
+    else if(prev.getData() == data){
+      prev = prev.getPrev();
+      prev.setNext(null);
+      size--;
+      return;
+    }
+    Node currF = head.getNext();
+    Node currB = tail.getPrev();
+    while(currF != currB){
+      if(currF.getData() == data){
+        currF.getPrev().setNext(currF.getNext());
+        currF.getNext().setPrev(currF.getPrev());
+        size--;
+        break;
+      }
+      else if(currB.getData() == data){
+        currB.getPrev().setNext(currB.getNext());
+        currB.getNext().setPrev(currB.getPrev());
+        size--;
+        break;
+      }
+      else if(currF == currB && currF.getData() == data){
+        currF.getPrev().setNext(currF.getNext());
+        currF.getNext().setPrev(currF.getPrev());
+        size--;
+        break;
+      }
+      currF = currF.getNext();
+      currB = currB.getPrev();
+    }
+  }
+
 }
