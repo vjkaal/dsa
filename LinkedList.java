@@ -4,10 +4,12 @@ class LinkedList{
   Node current, prev;
   Node PreviousOfPrev;
 
-  private static int size = 0;
+  private static int SIZE = 0;
 
   public LinkedList(){}
-  public LinkedList(int data){head = new Node(data);size++;}
+  public LinkedList(int data){head = new Node(data);SIZE++;}
+
+  public int getSize(){ return SIZE; }
 
   private static class Node{
     int data;
@@ -33,14 +35,14 @@ class LinkedList{
       prev.setNext(current);
       prev = current;
     }
-    size++;
+    SIZE++;
   }
 
   public void insertHead(int data){
     current = new Node(data);
     current.setNext(head);
     head = current;
-    size++;
+    SIZE++;
   }
 
   public void insertAfter(int elem, int data){
@@ -52,7 +54,7 @@ class LinkedList{
         Node temp = new Node(data);
         temp.setNext(current.getNext());
         current.setNext(temp);
-        size++;
+        SIZE++;
       }
       current = current.getNext();
     }
@@ -60,9 +62,13 @@ class LinkedList{
 
   public void removeS_Elem(int data){
     if(head == null) return;
-    else if(head.getData() == data){
+
+    if(head.getData() == data){
       head = head.getNext();
       return;
+    }
+    if(prev.getData() == data){
+      remove();
     }
     else{
       current = head.getNext();
@@ -73,7 +79,7 @@ class LinkedList{
         else current = current.getNext();
         previous = current;
       }
-      size--;
+      SIZE--;
     }
   }
 
@@ -81,12 +87,29 @@ class LinkedList{
     if(head == null) return;
     // System.out.println(prev.getData());
     PreviousOfPrev.setNext(null);
+    setPreviousOfPrev();
+    SIZE--;
+  }
+
+  private void setPreviousOfPrev(){
+    if(head == null) return;
+    else if(SIZE < 2) return;
+
+    current = head;
+    while(current != null){
+      if(current.getNext().getNext() == null){
+        PreviousOfPrev = current;
+        System.out.println("set for next remove");
+        return;
+      }
+      current = current.getNext();
+    }
   }
 
   public void removeHead(){
     if(head == null) return;
     head = head.getNext();
-    size--;
+    SIZE--;
   }
 
   public void traverseList(){
@@ -102,7 +125,7 @@ class LinkedList{
   public int getMidElem(){
     if(head == null) return -1;
     current = head;
-    for(int i=0;i<size/2;i++){
+    for(int i=0;i<SIZE/2;i++){
       current = current.getNext();
     }
     return current.getData();
@@ -141,7 +164,7 @@ class LinkedList{
 
   public void sortList(){
     current = head;
-    int[] array = new int[size];
+    int[] array = new int[SIZE];
     int i=0;
     while(current != null){
       array[i] = current.getData();
@@ -156,7 +179,7 @@ class LinkedList{
 
     current = head;
     i=0;
-    while(current!=null || i < size){
+    while(current!=null || i < SIZE){
       current.setData(array[i]);
       current=current.getNext();
       i++;
@@ -248,5 +271,101 @@ class LinkedList{
   public boolean deleteList(){
     head = null;
     return head == null;
+  }
+
+  public int getNthNode(int n){
+    if(head == null) return -1;
+    if(n > SIZE) return -1;
+
+    current = head;
+    int curr = 0;
+    int elem = 0;
+    while(current!=null){
+      if(n == curr){
+        elem = current.getData();
+      }
+      current = current.getNext();
+      curr++;
+    }
+    return elem;
+  }
+
+  public int getNthNodeRev(int n){
+    if(head == null) return -1;
+    if(n > SIZE) return -2;
+
+    current = head;
+    int curr = 0;
+    int elem = 0;
+    while(current!=null){
+      if(n == (SIZE-curr)){
+        elem = current.getData();
+      }
+      current = current.getNext();
+      curr++;
+    }
+    return elem;
+  }
+
+  public int totalOccurences(int num){
+    if(head == null) return -1;
+
+    current = head;
+    int occ = 0;
+    while(current!=null){
+      if(num == current.getData()) occ++;
+      current = current.getNext();
+    }
+    return occ;
+  }
+
+  public boolean detectLoop(){
+    if(head == null) return -1;
+
+    if(prev.getNext() == null) return false;
+    return true;
+  }
+
+
+  // CYCLING HERE
+
+  private Node findNthNode(int n){
+    if(head == null) return null;
+    if(n > SIZE) return prev;
+
+    current = head;
+    int curr = 0;
+    Node elem = null;
+    while(current!=null){
+      if(n == curr){
+        elem = current;
+        break;
+      }
+      current = current.getNext();
+      curr++;
+    }
+    return elem;
+  }
+
+  public void createLoop(){
+    Random rand = new Random();
+    int n = rand.nextInt(SIZE)+1;
+    System.out.println("n: "+ n);
+    Node curr = findNthNode(n);
+    prev.setNext(curr);
+  }
+
+  public boolean chkCycle(){
+    Node curr1 = head.getNext();
+    Node curr2 = head.getNext().getNext();
+
+    while(curr2 != null || curr2.getNext() != null){
+      System.out.println(curr1.getData()+" - "+curr2.getData());
+      if(curr2 == curr1) return true;
+      curr1 = curr1.getNext();
+      if(curr2.getNext().getNext() == null) return false;
+      curr2 = curr2.getNext().getNext();
+    }
+    return false;
   }
 }
