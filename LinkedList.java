@@ -2,6 +2,7 @@ class LinkedList{
 
   Node head;
   Node current, prev;
+  Node PreviousOfPrev;
 
   private static int size = 0;
 
@@ -27,6 +28,7 @@ class LinkedList{
       prev = head;
     }
     else{
+      PreviousOfPrev = prev;
       current = new Node(data);
       prev.setNext(current);
       prev = current;
@@ -77,7 +79,8 @@ class LinkedList{
 
   public void remove(){
     if(head == null) return;
-    System.out.println(prev.getData());
+    // System.out.println(prev.getData());
+    PreviousOfPrev.setNext(null);
   }
 
   public void removeHead(){
@@ -240,5 +243,10 @@ class LinkedList{
       array[j] = key;
       // if(i == 2) break;
     }
+  }
+
+  public boolean deleteList(){
+    head = null;
+    return head == null;
   }
 }
